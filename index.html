@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Actividad interactiva: Cruzarrio</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    body { margin: 0; padding: 24px; background: #f3f6fa; color: #172033; }
+    main { max-width: 960px; margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.5rem, 3vw, 2rem); }
+    p { line-height: 1.5; }
+    .frame { margin-top: 18px; padding: 12px; background: white; border: 1px solid #d8e0eb; border-radius: 14px; box-shadow: 0 8px 24px #18243a12; }
+    #player { width: 100%; min-height: 380px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+    ruffle-player { display: block; width: min(100%, 600px); aspect-ratio: 600 / 380; }
+    .note { color: #526078; font-size: .92rem; }
+    @media (max-width: 600px) { body { padding: 12px; } .frame { padding: 6px; } #player { min-height: 240px; } }
+  </style>
+  <script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+      autoplay: "on",
+      unmuteOverlay: "visible",
+      backgroundColor: "#ffffff",
+      letterbox: "on"
+    };
+  </script>
+  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+</head>
+<body>
+  <main>
+    <h1>Actividad interactiva: Cruzarrio</h1>
+    <p>Haz clic dentro de la actividad para empezar. Si el navegador solicita permiso para reproducir sonido, actívalo.</p>
+    <section class="frame" aria-label="Reproductor de la actividad">
+      <div id="player">Cargando la actividad…</div>
+    </section>
+    <p class="note">Este reproductor utiliza Ruffle. Se necesita conexión a Internet para cargar el reproductor; el archivo cruzarrio.swf debe estar en la misma carpeta que esta página.</p>
+  </main>
+  <script>
+    window.addEventListener("load", function () {
+      const host = document.getElementById("player");
+      if (!window.RufflePlayer || !window.RufflePlayer.newest) {
+        host.textContent = "No se pudo cargar Ruffle. Comprueba tu conexión a Internet y vuelve a intentarlo.";
+        return;
+      }
+      const ruffle = window.RufflePlayer.newest();
+      const player = ruffle.createPlayer();
+      player.style.width = "100%";
+      player.style.height = "100%";
+      host.replaceChildren(player);
+      player.load({ url: "cruzarrio.swf" }).catch(function () {
+        host.textContent = "No se pudo cargar cruzarrio.swf. Comprueba que el archivo está junto a index.html.";
+      });
+    });
+  </script>
+</body>
+</html>
